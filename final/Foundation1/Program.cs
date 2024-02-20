@@ -1,45 +1,12 @@
 using System;
 using System.Collections.Generic;
 
-class Program
+public class Video
 {
-    static void Main()
-    {
-        // Create videos
-        List<Video> videos = new List<Video>();
-
-        Video video1 = new Video("Title 1", "Author 1", 120);
-        video1.AddComment("User1", "Great video!");
-        video1.AddComment("User2", "Interesting content.");
-        videos.Add(video1);
-
-        Video video2 = new Video("Title 2", "Author 2", 180);
-        video2.AddComment("User3", "Nice job!");
-        videos.Add(video2);
-
-        // Display video details and comments
-        foreach (var video in videos)
-        {
-            Console.WriteLine($"Title: {video.Title}");
-            Console.WriteLine($"Author: {video.Author}");
-            Console.WriteLine($"Length: {video.Length} seconds");
-            Console.WriteLine($"Number of Comments: {video.GetNumberOfComments()}");
-            Console.WriteLine("Comments:");
-            foreach (var comment in video.Comments)
-            {
-                Console.WriteLine($"- {comment.Name}: {comment.Text}");
-            }
-            Console.WriteLine();
-        }
-    }
-}
-
-class Video
-{
-    public string Title { get; private set; }
-    public string Author { get; private set; }
-    public int Length { get; private set; }
-    public List<Comment> Comments { get; private set; }
+    public string Title { get; set; }
+    public string Author { get; set; }
+    public int Length { get; set; } // in seconds
+    public List<Comment> Comments { get; set; }
 
     public Video(string title, string author, int length)
     {
@@ -49,25 +16,60 @@ class Video
         Comments = new List<Comment>();
     }
 
-    public void AddComment(string name, string text)
-    {
-        Comments.Add(new Comment(name, text));
-    }
-
     public int GetNumberOfComments()
     {
         return Comments.Count;
     }
+
+    public void AddComment(string commenterName, string text)
+    {
+        Comments.Add(new Comment(commenterName, text));
+    }
 }
 
-class Comment
+public class Comment
 {
-    public string Name { get; private set; }
-    public string Text { get; private set; }
+    public string CommenterName { get; set; }
+    public string Text { get; set; }
 
-    public Comment(string name, string text)
+    public Comment(string commenterName, string text)
     {
-        Name = name;
+        CommenterName = commenterName;
         Text = text;
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        // Creating videos
+        Video video1 = new Video("Video 1", "Author 1", 120);
+        Video video2 = new Video("Video 2", "Author 2", 180);
+
+        // Adding comments
+        video1.AddComment("User1", "Great video!");
+        video1.AddComment("User2", "Nice content!");
+
+        video2.AddComment("User3", "Awesome!");
+        video2.AddComment("User4", "Interesting topic!");
+
+        // Displaying video information
+        DisplayVideoInfo(video1);
+        DisplayVideoInfo(video2);
+    }
+
+    static void DisplayVideoInfo(Video video)
+    {
+        Console.WriteLine($"Title: {video.Title}");
+        Console.WriteLine($"Author: {video.Author}");
+        Console.WriteLine($"Length: {video.Length} seconds");
+        Console.WriteLine($"Number of Comments: {video.GetNumberOfComments()}");
+        Console.WriteLine("Comments:");
+        foreach (var comment in video.Comments)
+        {
+            Console.WriteLine($"- {comment.CommenterName}: {comment.Text}");
+        }
+        Console.WriteLine();
     }
 }
